@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/static/img/favo.png">
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <title>悦尔钢琴艺术中心</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -82,107 +82,52 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="danger">
-                  <td>ZZ</td>
-                  <td>XX</td>
-                  <td>小熊</td>
-                  <td>男</td>
-                  <td>8</td>
-                  <td>彩虹城</td>
-                  <td>否</td>
-                  <td>否</td>
-                  <td>2016-04-03 09:00</td>
-                  <td>Jolin</td>
-                  <td>2016-04-03 09:00</td>
-                  <td>距离有些远，上课让老人送来，在考虑如果这个距离方不方便。预约下周三晚上7:00体验。</td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
-                </tr>
-                 <tr class="success">
-                  <td>A</td>
-                  <td>B</td>
-                  <td>小六</td>
-                  <td>女</td>
-                  <td>4</td>
-                  <td>盛元慧谷</td>
-                  <td>是</td>
-                  <td>否</td>
-                  <td>2016-04-02 09:00</td>
-                  <td>Join</td>
-                  <td>距离有些远，上课让老人送来，在考虑如果这个距离方不方便。预约下周三晚上7:00体验。</td>
-                  <td><button class="btn btn-info" type="submit">签约</button></td>
-                </tr>
-                <tr class="info">
-                  <td>阿哥</td>
-                  <td>C</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
-                </tr>
-               
-                <tr class="info">
-                  <td>阿哥</td>
-                  <td>D</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
-                </tr>
-                 <tr class="info">
-                  <td>阿哥</td>
-                  <td>E</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
-                </tr>
-                 <tr class="info">
-                  <td>阿哥</td>
-                  <td>F</td>
-                  <td></td>
-                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a><a class="btn btn-default" href="./filltest.html" role="button">设置回访时间</a></td>
-                </tr>
-                 <tr class="info">
-                  <td>阿哥</td>
-                  <td>G</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
-                </tr>
-                
+              	
+              {% if customer_list %}
+              
+    				{% for customer in customer_list %}
+    				{% ifequal customer.is_expr 'Y'%}
+    					{% ifequal customer.is_appoints 'Y'%}
+       					<tr class="success">
+       					{% else %}
+       					<tr class="info">
+       					{% endifequal%}
+       				{% else %}
+       					<tr class="danger">
+       				{% endifequal%}
+                  		<td rowspan="{{customer.remark_size}}">{{customer.name}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.mobile_no}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.nick_name}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.gender}}</td>
+                		<td rowspan="{{customer.remark_size}}">{{customer.age}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.address}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.is_expr}}</td>
+                		<td rowspan="{{customer.remark_size}}">{{customer.is_appoints}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.expr_time}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.teacher_name}}</td>
+                  		<td>{{ customer.first_remark.remark }}</td>
+                  		<td>{{ customer.first_remark.remark_time }}</td>
+                  		<td rowspan="{{customer.remark_size}}"><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
+                	</tr>
+                	{% if customer.remark_list %}
+                	{% for remark in customer.remark_list %}
+                	{% ifequal customer.is_expr 'Y'%}
+    					{% ifequal customer.is_appoints 'Y'%}
+       					<tr class="success">
+       					{% else %}
+       					<tr class="info">
+       					{% endifequal%}
+       				{% else %}
+       					<tr class="danger">
+       				{% endifequal%}
+                		<td>{{remark.remark}}</td>
+                  		<td>{{remark.remark_time}}</td>
+                	</tr>                	
+       				{% endfor %}
+       				{% endif %}
+   					{% endfor %}
+  
+			  {% endif %}  
 
               </tbody>
             </table>

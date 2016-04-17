@@ -10,9 +10,20 @@ class Customer(models.Model):
 	gender=models.CharField(max_length=1)
 	create_time = models.DateTimeField('create time')
 	modified_time = models.DateTimeField('modified time')
+	age=models.IntegerField()
+	is_expr=models.CharField(max_length=1)
+	is_appoints=models.CharField(max_length=1)
+	expr_time=models.DateTimeField('expr time')
+	teacher_name=models.CharField(max_length=16)
 	
+class Remark(models.Model):
+	refer_type=models.CharField(max_length=16)
+	refer_id=models.BigIntegerField()
+	remark_time=models.DateTimeField()
+	remark=models.CharField(max_length=512)
+
+class Teacher(models.Model):
+	pass
 	
-
-
 	
 	
