@@ -15,6 +15,7 @@ class Customer(models.Model):
 	is_appoints=models.CharField(max_length=1)
 	expr_time=models.DateTimeField('expr time')
 	teacher_name=models.CharField(max_length=16)
+	sales_id=models.BigIntegerField()
 	
 class Remark(models.Model):
 	refer_type=models.CharField(max_length=16)
@@ -23,7 +24,15 @@ class Remark(models.Model):
 	remark=models.CharField(max_length=512)
 
 class Teacher(models.Model):
-	pass
+	teacher_name=models.CharField(max_length=16)
+	teacher_mobile=models.CharField(max_length=16)
 	
+class Sales(models.Model):
+	sales_name=models.CharField(max_length=16)
+	sales_mobile=models.CharField(max_length=16)
+	username=models.CharField(max_length=16)
+	password=models.CharField(max_length=128)
+	
+
 	
 	
