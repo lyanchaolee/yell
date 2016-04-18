@@ -32,6 +32,7 @@ class Sales(models.Model):
 	sales_mobile=models.CharField(max_length=16)
 	username=models.CharField(max_length=16)
 	password=models.CharField(max_length=128)
+	is_super=models.CharField(max_length=1)
 	
 
 	
