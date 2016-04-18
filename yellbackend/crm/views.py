@@ -7,6 +7,9 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import logout as django_logout
 from django.shortcuts import get_object_or_404, render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
 
 def course_mgt(request):
 	customer_list=Customer.objects.order_by('-id')[:5]
@@ -53,6 +56,15 @@ def leads(request):
 			customer_list=Customer.objects.order_by('-id')
 		else:
 			customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-id')
+		paginator = Paginator(customer_list, 20)
+		page = request.GET.get('page')
+		try:
+			customer_list = paginator.page(page)
+		except PageNotAnInteger:
+			customer_list = paginator.page(1)
+		except EmptyPage:
+			customer_list = paginator.page(paginator.num_pages)
+			
 		for customer in customer_list:
 			all_remark=Remark.objects.filter(refer_id=customer.id, refer_type='Leads').order_by('id')
 			if all_remark.count() > 0:
@@ -64,10 +76,18 @@ def leads(request):
 				first_remark=Remark()
 				first_remark.remark=""
 				customer.first_remark=""
+		
+			
 		template=loader.get_template('crm/leads.html')
+		
+		page_list=[]
+		for i in range(1,customer_list.paginator.num_pages+1):
+			page_list.append(i)
+		
 		context={
 			'customer_list':customer_list,
-			'sales_id':sales_identify
+			'page_list':page_list,
+			'sales_id':sales_identify,
 		}
 		return HttpResponse(template.render(context, request))
 	except(KeyError):
