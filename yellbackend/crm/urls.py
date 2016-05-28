@@ -14,5 +14,13 @@ urlpatterns =[
 	url(r'^login_post.html$', views.login_post),
 	url(r'^course_show.html$', views.course_show),
 	url(r'^course_mgt.html$', views.course_mgt),	
+	url(r'^test.html$', views.test),
+	url(r'^lead_editing.html$', views.lead_editing),
+	url(r'^reservation.html$', views.reservation),
+	url(r'^resrvation_post.html$', views.resrvation_post),
+	url(r'^appoints.html$', views.appoints),
+	url(r'^appoints_post.html$', views.appoints_post),
+	url(r'^remark.html$', views.remark),
+	url(r'^remark_post.html$', views.remark_post),
 
 ]

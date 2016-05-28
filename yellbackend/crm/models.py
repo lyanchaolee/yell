@@ -16,6 +16,7 @@ class Customer(models.Model):
 	expr_time=models.DateTimeField('expr time')
 	teacher_name=models.CharField(max_length=16)
 	sales_id=models.BigIntegerField()
+	appoints_time=models.DateTimeField('appoints time')
 	
 class Remark(models.Model):
 	refer_type=models.CharField(max_length=16)

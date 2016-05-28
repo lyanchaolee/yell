@@ -12,7 +12,9 @@
     <title>悦尔钢琴艺术中心</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <script  src="/static/js/jquery.js"></script>
+    <script  src="/static/js/bootstrap.js"></script>
   </head>
 
   <body>
@@ -109,7 +111,11 @@
                   		<td rowspan="{{customer.remark_size}}">{{customer.teacher_name}}</td>
                   		<td>{{ customer.first_remark.remark }}</td>
                   		<td>{{ customer.first_remark.remark_time }}</td>
-                  		<td rowspan="{{customer.remark_size}}"><a class="btn btn-default" href="./filltest.html" role="button">体验课预约</a></td>
+                  		<td rowspan="{{customer.remark_size}}">
+                  		<a class="btn btn-default" href="./reservation.html?cust_id={{customer.id}}" role="button">预约</a><br/>
+                  		<a class="btn btn-default" href="./appoints.html?cust_id={{customer.id}}" role="button">到约</a>
+                  		<a class="btn btn-default" href="./remark.html?cust_id={{customer.id}}" role="button">备注</a><br/>
+                  		</td>
                 	</tr>
                 	{% if customer.remark_list %}
                 	{% for remark in customer.remark_list %}
@@ -150,6 +156,7 @@
         	<li><a>当前页为第 {{ customer_list.number }}页，共{{ customer_list.paginator.num_pages }}页</a></li>
 			</ul>
           </div>
+
 
       <footer class="footer">
         <p>&copy; 2016 悦尔钢琴艺术中心</p>

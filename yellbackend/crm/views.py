@@ -8,6 +8,9 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.views import logout as django_logout
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils import timezone
+
+
 
 
 
@@ -53,9 +56,9 @@ def leads(request):
 		sales_identify=request.COOKIES["user_id"]
 		sales=Sales.objects.get(id=sales_identify)
 		if sales.is_super=='Y':
-			customer_list=Customer.objects.order_by('-id')
+			customer_list=Customer.objects.order_by('-modified_time')
 		else:
-			customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-id')
+			customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-modified_time')
 		paginator = Paginator(customer_list, 20)
 		page = request.GET.get('page')
 		try:
@@ -111,5 +114,64 @@ def course_show(request):
 	}
 	
 	return HttpResponse(template.render(context, request))
+	
+def test(request):
+	template=loader.get_template('crm/test.html')
+	
+	return HttpResponse(template.render(request))
+	
+def lead_editing(request):
+	template=loader.get_template('crm/lead_editing.html')
+	
+	return HttpResponse(template.render(request))
+	
+def reservation(request):
+	customerid=request.GET.get('cust_id')
+	customer=Customer.objects.get(id=customerid)
+	context={
+		'customer':customer
+	}
+	template=loader.get_template('crm/reservation.html')
+	return HttpResponse(template.render(context,request))
+
+	
+def resrvation_post(request):
+	timeselect=request.POST.get('timeselect')
+	customerid=request.POST.get('customerid')
+	customer=Customer.objects.filter(id=customerid).update(expr_time=timeselect,modified_time=timezone.now(),is_expr='Y')
+	return HttpResponseRedirect('leads.html')
+
+def appoints(request):
+	customerid=request.GET.get('cust_id')
+	customer=Customer.objects.get(id=customerid)
+	context={
+		'customer':customer
+	}
+	template=loader.get_template('crm/appoints.html')
+	return HttpResponse(template.render(context,request))	
+	
+def appoints_post(request):
+	timeselect=request.POST.get('timeselect')
+	customerid=request.POST.get('customerid')
+	customer=Customer.objects.filter(id=customerid).update(appoints_time=timeselect,modified_time=timezone.now(),is_appoints='Y')
+	return HttpResponseRedirect('leads.html')
+	
+def remark(request):
+	customerid=request.GET.get('cust_id')
+	customer=Customer.objects.get(id=customerid)
+	context={
+		'customer':customer
+	}
+	template=loader.get_template('crm/remark.html')
+	return HttpResponse(template.render(context,request))	
+	
+def remark_post(request):
+	remark_str=request.POST.get('remark')
+	customerid=request.POST.get('customerid')
+	remark = Remark(refer_type="Leads",refer_id=customerid,remark=remark_str,remark_time=timezone.now())
+	remark.save()
+	Customer.objects.filter(id=customerid).update(modified_time=timezone.now())
+	return HttpResponseRedirect('leads.html')
+	
 	
 		

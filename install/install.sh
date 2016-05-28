@@ -21,3 +21,8 @@ insert into crm_customer(name,nick_name,mobile_no,address,gender,create_time,mod
 
 
 insert into crm_sales(sales_name,sales_mobile,password,username) select first_name,'18657100339',password,username from auth_user where username='lyc';
+
+
+
+https://pypi.python.org/pypi/pytz/#downloads
+sudo python setup.py install
