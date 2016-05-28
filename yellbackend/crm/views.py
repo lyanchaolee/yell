@@ -53,12 +53,34 @@ def login_post(request):
 
 def leads(request):
 	try:
+		filter_type=request.GET["filter_type"]
+	except(KeyError):
+		filter_type='all'
+	if filter_type ==None or filter_type=='':
+		filter_type='all'
+	try:
 		sales_identify=request.COOKIES["user_id"]
+
 		sales=Sales.objects.get(id=sales_identify)
 		if sales.is_super=='Y':
-			customer_list=Customer.objects.order_by('-modified_time')
+			if filter_type=='all':
+				customer_list=Customer.objects.order_by('-modified_time')
+			elif filter_type=='new':
+				customer_list=Customer.objects.filter(is_expr='N',is_appoints='N').order_by('-modified_time')
+			elif filter_type=='nappoints':
+				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='N').order_by('-modified_time')
+			else:
+				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='Y').order_by('-modified_time')
 		else:
-			customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-modified_time')
+			if filter_type=='all':
+				customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-modified_time')
+			elif filter_type=='new':
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='N',is_appoints='N').order_by('-modified_time')
+			elif filter_type=='nappoints':
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='N').order_by('-modified_time')
+			else:
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='Y').order_by('-modified_time')
+			
 		paginator = Paginator(customer_list, 20)
 		page = request.GET.get('page')
 		try:
@@ -91,6 +113,7 @@ def leads(request):
 			'customer_list':customer_list,
 			'page_list':page_list,
 			'sales_id':sales_identify,
+			'filter_type':filter_type,
 		}
 		return HttpResponse(template.render(context, request))
 	except(KeyError):
@@ -172,6 +195,10 @@ def remark_post(request):
 	remark.save()
 	Customer.objects.filter(id=customerid).update(modified_time=timezone.now())
 	return HttpResponseRedirect('leads.html')
+
+def leads_filter(request):
+	filter_type=request.GET.get('filter_type')
+	return HttpResponseRedirect('leads.html?filter_type='+filter_type)
 	
 	
 		

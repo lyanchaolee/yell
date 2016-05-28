@@ -44,14 +44,13 @@
 
     <div class="row">
         <div class="col-lg-4">
-        <form class="form-inline">
-            <select class="form-control">
-               <option>到约</option>
-               <option>未到约</option>
-               <option>新导入</option>
-               <option>已失效客户</option>
-               <option>3月5日回访</option>
-               <option>3月6日回访</option>
+        <form class="form-inline" action="/crm/leads_filter.html" method="get">
+            <select class="form-control" name="filter_type">
+           	   <option value="all">请选择</option>
+               <option value="new">新导入</option>
+               <option value="nappoints">已约未到约</option>
+               <option value="appoints">已到约</option>
+               <option value="all">全部</option>
             </select>
             <button type="submit" class="btn btn-success">筛选</button>
         </form>
@@ -141,17 +140,17 @@
             </table>
             <ul class="pagination">
             {% if customer_list.has_previous %}
-           	<li><a href="?page={{ customer_list.previous_page_number }}">上一页</a></li>
+           	<li><a href="?page={{ customer_list.previous_page_number }}&filter_type={{ filter_type }}">上一页</a></li>
         	{% endif %}
         	
         	{% if customer_list.paginator.num_pages %}
         	{% for page in page_list %}
-        	<li><a href="?page={{ page }}">{{page}}</a></li>
+        	<li><a href="?page={{ page }}&filter_type={{ filter_type }}">{{page}}</a></li>
         	{% endfor %}
         	{% endif %}
         	
         	{% if customer_list.has_next %}
-            <li><a href="?page={{ customer_list.next_page_number }}">下一页</a></li>
+            <li><a href="?page={{ customer_list.next_page_number }}&filter_type={{ filter_type }}">下一页</a></li>
         	{% endif %}
         	<li><a>当前页为第 {{ customer_list.number }}页，共{{ customer_list.paginator.num_pages }}页</a></li>
 			</ul>

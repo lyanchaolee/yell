@@ -22,5 +22,6 @@ urlpatterns =[
 	url(r'^appoints_post.html$', views.appoints_post),
 	url(r'^remark.html$', views.remark),
 	url(r'^remark_post.html$', views.remark_post),
+	url(r'^leads_filter.html$', views.leads_filter),
 
 ]
