@@ -48,14 +48,15 @@
             <button type="submit" class="btn btn-success">筛选</button>
         </form>
         </div>
-        <div class="col-lg-4">
+		<div class="col-lg-4">
         <form class="form-inline" enctype="multipart/form-data" action="/crm/leads_upload.html" method="post">
-        	{% csrf_token %}
-            <input type="file" class="info" name="fileupload"/>
+        	{% csrf_token %}	
+            <input type="file" class="info"  name="fileupload"/>
             <button type="submit" class="btn btn-success">上传</button>
         </form>
         </div>
-    </div>
+	</div>
+   
 
       <div class="table-responsive">
             <table class="table table-bordered">

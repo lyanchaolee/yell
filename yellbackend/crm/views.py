@@ -88,7 +88,8 @@ def leads(request):
 			customer_list = paginator.page(paginator.num_pages)
 			
 		for customer in customer_list:
-			customer.sales_name=sales.sales_name
+			c_sales=Sales.objects.get(id=customer.sales_id)
+			customer.sales_name=c_sales.sales_name
 			all_remark=Remark.objects.filter(refer_id=customer.id, refer_type='Leads').order_by('id')
 			if all_remark.count() > 0:
 				first_remark=all_remark[0]
