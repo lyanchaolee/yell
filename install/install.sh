@@ -37,3 +37,7 @@ alter table crm_customer modify appoints_time  datetime(6)  Null;
 
 
 http://127.0.0.1:8000/admin/
+
+python manage.py shell
+python manage.py createsuperuser
+python manage.py changepassword
