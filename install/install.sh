@@ -41,3 +41,5 @@ http://127.0.0.1:8000/admin/
 python manage.py shell
 python manage.py createsuperuser
 python manage.py changepassword
+
+create index service_idx on crm_customer(is_service,is_appoints,is_expr);
