@@ -24,5 +24,7 @@ urlpatterns =[
 	url(r'^remark_post.html$', views.remark_post),
 	url(r'^leads_filter.html$', views.leads_filter),
 	url(r'^leads_upload.html$', views.leads_upload),
+	url(r'^payment.html$', views.payment),
+	url(r'^payment_post.html$', views.payment_post),	
 
 ]

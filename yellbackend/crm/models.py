@@ -17,6 +17,7 @@ class Customer(models.Model):
 	teacher_name=models.CharField(max_length=16)
 	sales_id=models.BigIntegerField()
 	appoints_time=models.DateTimeField('appoints time')
+	is_service=models.CharField(max_length=1,null='N')
 	
 class Remark(models.Model):
 	refer_type=models.CharField(max_length=16)
@@ -34,6 +35,23 @@ class Sales(models.Model):
 	username=models.CharField(max_length=16)
 	password=models.CharField(max_length=128)
 	is_super=models.CharField(max_length=1)
+	
+class CustInService(models.Model):
+	name=models.CharField(max_length=16)
+	nick_name=models.CharField(max_length=16)
+	mobile_no=models.CharField(max_length=16)
+	address=models.CharField(max_length=128)
+	gender=models.CharField(max_length=1)
+	create_time = models.DateTimeField('create time')
+	modified_time = models.DateTimeField('modified time')
+	age=models.IntegerField()
+	teacher_name=models.CharField(max_length=16)
+	sales_id=models.BigIntegerField()
+	birthday=models.DateField('birthday',null=True)
+	classtime=models.DateTimeField('classtime',null=True)
+	contract_type=models.CharField(max_length=16,null=True)
+	contract_time=models.DateTimeField('contract_time',null=True)
+	
 	
 
 	

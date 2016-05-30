@@ -3,6 +3,7 @@ from django.template import loader,RequestContext
 from .models import Customer
 from .models import Remark
 from .models import Sales
+from .models import CustInService
 from django.contrib.auth.hashers import make_password,check_password
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import logout as django_logout
@@ -61,22 +62,22 @@ def leads(request):
 		sales=Sales.objects.get(id=sales_identify)
 		if sales.is_super=='Y':
 			if filter_type=='all':
-				customer_list=Customer.objects.order_by('-modified_time')
+				customer_list=Customer.objects.filter(is_service='N').order_by('-modified_time')
 			elif filter_type=='new':
-				customer_list=Customer.objects.filter(is_expr='N',is_appoints='N').order_by('-modified_time')
+				customer_list=Customer.objects.filter(is_expr='N',is_appoints='N',is_service='N').order_by('-modified_time')
 			elif filter_type=='nappoints':
-				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='N').order_by('-modified_time')
+				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='N',is_service='N').order_by('-modified_time')
 			else:
-				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='Y').order_by('-modified_time')
+				customer_list=Customer.objects.filter(is_expr='Y',is_appoints='Y',is_service='N').order_by('-modified_time')
 		else:
 			if filter_type=='all':
-				customer_list=Customer.objects.filter(sales_id=sales_identify).order_by('-modified_time')
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_service='N').order_by('-modified_time')
 			elif filter_type=='new':
-				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='N',is_appoints='N').order_by('-modified_time')
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='N',is_appoints='N',is_service='N').order_by('-modified_time')
 			elif filter_type=='nappoints':
-				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='N').order_by('-modified_time')
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='N',is_service='N').order_by('-modified_time')
 			else:
-				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='Y').order_by('-modified_time')
+				customer_list=Customer.objects.filter(sales_id=sales_identify,is_expr='Y',is_appoints='Y',is_service='N').order_by('-modified_time')
 			
 		paginator = Paginator(customer_list, 20)
 		page = request.GET.get('page')
@@ -222,8 +223,50 @@ def leads_upload(request):
 						cust_list.append(Customer(name=row[0],nick_name=row[1],mobile_no=str(int(row[2])),
 										address=row[3],gender=row[4],create_time=timezone.now(),
 									 	modified_time=timezone.now(),age=row[5],is_expr='N',teacher_name=row[6],
-									 	sales_id=sales_identify,is_appoints='N'))
+									 	sales_id=sales_identify,is_appoints='N',is_service='N'))
 				Customer.objects.bulk_create(cust_list)
 			return HttpResponseRedirect('leads.html')
 	else:
 		return HttpResponse("Where is your file")
+		
+def payment(request):
+	customerid=request.GET.get('cust_id')
+	customer=Customer.objects.get(id=customerid)
+	context={
+		'customer':customer
+	}
+	template=loader.get_template('crm/payment.html')
+	return HttpResponse(template.render(context,request))
+	
+def payment_post(request):
+	sales_identify=request.COOKIES["user_id"]
+	customerid=request.POST.get('customerid')
+	birthday_str=request.POST.get('birthday')
+	teachername_str=request.POST.get('teachername')
+	contract_type_str=request.POST.get('contract_type')
+	contract_type_str=request.POST.get('contract_type')
+	classtime_str=request.POST.get('classtime')
+	customer=Customer.objects.get(id=customerid)
+	cust = CustInService(name=customer.name,nick_name=customer.nick_name,mobile_no=customer.mobile_no,address=customer.address,age=customer.age,
+						gender=customer.gender,create_time=timezone.now(),modified_time=timezone.now(),teacher_name=teachername_str,
+						sales_id=sales_identify,birthday=birthday_str,classtime=classtime_str,contract_type=contract_type_str,contract_time=timezone.now())
+	cust.save()
+	Customer.objects.filter(id=customerid).update(is_service='Y',modified_time=timezone.now())
+	return HttpResponseRedirect('member.html')
+
+
+def member(request):
+	sales_identify=request.COOKIES["user_id"]
+	sales=Sales.objects.get(id=sales_identify)
+	if sales.is_super=='Y':
+		service_list=CustInService.objects.all()
+	else:
+		service_list=CustInService.objects.filter(sales_id=sales_identify)
+	for service in service_list:
+		service.sales_name=Sales.objects.get(id=service.sales_id).sales_name
+	template=loader.get_template('crm/member.html')
+	context={
+		'service_list':service_list
+	}
+	
+	return HttpResponse(template.render(context, request))

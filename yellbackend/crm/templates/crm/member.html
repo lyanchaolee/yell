@@ -33,28 +33,6 @@
         <h3 class="text-muted">悦尔钢琴艺术中心</h3>
       </div>
 
-
-       <div class="row">
-        <div class="col-lg-4">
-        <form class="form-inline">
-            <select class="form-control">
-               <option>Jolin</option>
-               <option>Yuki</option>
-            </select>
-            <select class="form-control">
-               <option>男</option>
-               <option>女</option>
-            </select>
-             <select class="form-control">
-               <option>半年</option>
-               <option>一年</option>
-               <option>三年</option>
-            </select>
-            <button type="submit" class="btn btn-success">筛选</button>
-        </form>
-        </div>
-    </div>
-
       <div class="table-responsive">
             <table class="table table-bordered">
               <thead>
@@ -69,50 +47,33 @@
                   <th>顾问</th>
                   <th>任课老师</th>
                   <th>班级时间</th>
-                  <th>操作</th>
-
                 </tr>
               </thead>
               <tbody>
-                <tr class="danger">
-                  <td>F</td>
-                  <td>E</td>
-                  <td>小熊</td>
-                  <td>男</td>
-                  <td>2010-04-03</td>
-                  <td>2016-04-03</td>
-                  <td>半年</td>
-                  <td>Jolin</td>
-                  <td>Jolin</td>
-                  <td>2016-04-03</td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">续约</a><a class="btn btn-default" href="./filltest.html" role="button">历史合同记录</a></td>
-                </tr>
-                <tr class="info">
-                  <td>Z</td>
-                  <td>X</td>
-                  <td>小熊</td>
-                  <td>男</td>
-                  <td>2010-04-03</td>
-                  <td>2016-04-03</td>
-                  <td>一年</td>
-                  <td>Jolin</td>
-                  <td>Jolin</td>
-                  <td>2016-04-03</td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">续约</a><a class="btn btn-default" href="./filltest.html" role="button">历史合同记录</a></td>
-                </tr>
-                <tr class="success">
-                  <td>Z</td>
-                  <td>X</td>
-                  <td>小熊</td>
-                  <td>男</td>
-                  <td>2010-04-03</td>
-                  <td>2016-04-03</td>
-                  <td>三年</td>
-                  <td>Jolin</td>
-                  <td>Jolin</td>
-                  <td>2016-04-03</td>
-                  <td><a class="btn btn-default" href="./filltest.html" role="button">续约</a><a class="btn btn-default" href="./filltest.html" role="button">历史合同记录</a></td>
-                </tr>
+                  {% if service_list %}    
+    				{% for service in service_list %}
+    				{% ifequal service.contract_type '三年'%}
+       					<tr class="success">
+       				{% endifequal%}
+       				{% ifequal service.contract_type '一年'%}
+       					<tr class="info">
+       				{% endifequal%}
+       				{% ifequal service.contract_type '半年'%}
+       					<tr class="danger">
+       				{% endifequal%}
+                  		<td>{{service.name}}</td>
+                  		<td>{{service.mobile_no}}</td>
+                  		<td>{{service.nick_name}}</td>
+                  		<td>{{service.gender}}</td>
+                  		<td>{{service.birthday}}</td>
+                  		<td>{{service.contract_time}}</td>
+                  		<td>{{service.contract_type}}</td>
+                  		<td>{{service.sales_name}}</td>
+                  		<td>{{service.teacher_name}}</td>
+                  		<td>{{service.classtime}}</td>
+                	</tr>
+   					{% endfor %} 
+			  {% endif %}  
               </tbody>
             </table>
           </div>
