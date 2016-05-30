@@ -9,10 +9,7 @@ from django.contrib.auth.views import logout as django_logout
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
-
-
-
-
+import xlrd
 
 def course_mgt(request):
 	customer_list=Customer.objects.order_by('-id')[:5]
@@ -115,6 +112,7 @@ def leads(request):
 			'sales_id':sales_identify,
 			'filter_type':filter_type,
 		}
+		
 		return HttpResponse(template.render(context, request))
 	except(KeyError):
 		return HttpResponse("You don't have privileges")		
@@ -201,4 +199,13 @@ def leads_filter(request):
 	return HttpResponseRedirect('leads.html?filter_type='+filter_type)
 	
 	
-		
+def leads_upload(request):
+	file_obj=request.FILES['fileupload']
+	destination = open('/Users/lyc/Desktop/tester/test.xlsx', 'wb+')
+	for chunk in file_obj:
+		destination.write(chunk)
+	destination.flush()
+	destination.close()
+	workbook=xlrd.open_workbook('/Users/lyc/Desktop/tester/test.xlsx')
+	sheet=workbook.sheet_by_index(0)
+	return HttpResponse("LOGIN FAIL"+str(sheet.ncols)+sheet.cell(0,0).value)

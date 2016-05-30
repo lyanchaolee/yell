@@ -26,3 +26,7 @@ insert into crm_sales(sales_name,sales_mobile,password,username) select first_na
 
 https://pypi.python.org/pypi/pytz/#downloads
 sudo python setup.py install
+
+
+https://pypi.python.org/pypi/xlrd
+sudo python setup.py install
