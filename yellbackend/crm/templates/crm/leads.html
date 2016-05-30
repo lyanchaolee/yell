@@ -35,13 +35,6 @@
         <h3 class="text-muted">悦尔钢琴艺术中心</h3>
       </div>
 
-
-     <div class="jumbotron">
-       
-        <p class="lead">今日提示</p>
-
-      </div>
-
     <div class="row">
         <div class="col-lg-4">
         <form class="form-inline" action="/crm/leads_filter.html" method="get">
@@ -78,6 +71,7 @@
                   <th>是否到约</th>
                   <th>体验课时间</th>
                   <th>体验课老师</th>
+                  <th>销售</th>
                   <th>备注</th>
                   <th>备注时间</th>
                   <th>操作</th>
@@ -105,14 +99,15 @@
                   		<td rowspan="{{customer.remark_size}}">{{customer.address}}</td>
                   		<td rowspan="{{customer.remark_size}}">{{customer.is_expr}}</td>
                 		<td rowspan="{{customer.remark_size}}">{{customer.is_appoints}}</td>
-                  		<td rowspan="{{customer.remark_size}}">{{customer.expr_time}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{% if customer.expr_time %}{{customer.expr_time}}{% endif %}</td>
                   		<td rowspan="{{customer.remark_size}}">{{customer.teacher_name}}</td>
+                  		<td rowspan="{{customer.remark_size}}">{{customer.sales_name}}</td>
                   		<td>{{ customer.first_remark.remark }}</td>
                   		<td>{{ customer.first_remark.remark_time }}</td>
                   		<td rowspan="{{customer.remark_size}}">
                   		<a class="btn btn-default" href="./reservation.html?cust_id={{customer.id}}" role="button">预约</a><br/>
-                  		<a class="btn btn-default" href="./appoints.html?cust_id={{customer.id}}" role="button">到约</a>
-                  		<a class="btn btn-default" href="./remark.html?cust_id={{customer.id}}" role="button">备注</a><br/>
+                  		<a class="btn btn-default" href="./appoints.html?cust_id={{customer.id}}" role="button">到约</a><br/>
+                  		<a class="btn btn-default" href="./remark.html?cust_id={{customer.id}}" role="button">备注</a>
                   		</td>
                 	</tr>
                 	{% if customer.remark_list %}

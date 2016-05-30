@@ -22,7 +22,7 @@ insert into crm_customer(name,nick_name,mobile_no,address,gender,create_time,mod
 
 insert into crm_sales(sales_name,sales_mobile,password,username) select first_name,'18657100339',password,username from auth_user where username='lyc';
 
-
+insert into crm_sales(sales_name,sales_mobile,password,username,is_super) select username,1111,password,username,'N' from auth_user where id=3;
 
 https://pypi.python.org/pypi/pytz/#downloads
 sudo python setup.py install
@@ -30,3 +30,10 @@ sudo python setup.py install
 
 https://pypi.python.org/pypi/xlrd
 sudo python setup.py install
+
+
+alter table crm_customer modify expr_time  datetime(6)  Null;
+alter table crm_customer modify appoints_time  datetime(6)  Null;
+
+
+http://127.0.0.1:8000/admin/

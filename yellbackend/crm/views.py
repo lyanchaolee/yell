@@ -88,6 +88,7 @@ def leads(request):
 			customer_list = paginator.page(paginator.num_pages)
 			
 		for customer in customer_list:
+			customer.sales_name=sales.sales_name
 			all_remark=Remark.objects.filter(refer_id=customer.id, refer_type='Leads').order_by('id')
 			if all_remark.count() > 0:
 				first_remark=all_remark[0]
@@ -201,11 +202,27 @@ def leads_filter(request):
 	
 def leads_upload(request):
 	file_obj=request.FILES['fileupload']
-	destination = open('/Users/lyc/Desktop/tester/test.xlsx', 'wb+')
-	for chunk in file_obj:
-		destination.write(chunk)
-	destination.flush()
-	destination.close()
-	workbook=xlrd.open_workbook('/Users/lyc/Desktop/tester/test.xlsx')
-	sheet=workbook.sheet_by_index(0)
-	return HttpResponse("LOGIN FAIL"+str(sheet.ncols)+sheet.cell(0,0).value)
+	sales_identify=request.COOKIES["user_id"]
+	if file_obj:
+		destination = open('/Users/lyc/Desktop/tester/test.xlsx', 'wb+')
+		for chunk in file_obj:
+			destination.write(chunk)
+		destination.flush()
+		destination.close()
+		workbook=xlrd.open_workbook('/Users/lyc/Desktop/tester/test.xlsx')
+		sheet=workbook.sheet_by_index(0)
+		cust_list=[]
+		if sheet:
+			nrows=sheet.nrows
+			if nrows>1:
+				for rownum in range(1,nrows):
+					row = sheet.row_values(rownum)
+					if len(row) == 7:
+						cust_list.append(Customer(name=row[0],nick_name=row[1],mobile_no=str(int(row[2])),
+										address=row[3],gender=row[4],create_time=timezone.now(),
+									 	modified_time=timezone.now(),age=row[5],is_expr='N',teacher_name=row[6],
+									 	sales_id=sales_identify,is_appoints='N'))
+				Customer.objects.bulk_create(cust_list)
+			return HttpResponseRedirect('leads.html')
+	else:
+		return HttpResponse("Where is your file")
