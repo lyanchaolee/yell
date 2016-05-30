@@ -48,7 +48,7 @@ class CustInService(models.Model):
 	teacher_name=models.CharField(max_length=16,null=True)
 	sales_id=models.BigIntegerField(null=True)
 	birthday=models.DateField('birthday',null=True)
-	classtime=models.DateTimeField('classtime',null=True)
+	classtime=models.DateField('classtime',null=True)
 	contract_type=models.CharField(max_length=16,null=True)
 	contract_time=models.DateTimeField('contract_time',null=True)
 	
