@@ -127,5 +127,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-	"/Users/lyc/Documents/yell/yellbackend/yellbackend/static",
+	"static",
 ]
