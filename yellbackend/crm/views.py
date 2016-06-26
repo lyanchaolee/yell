@@ -206,12 +206,12 @@ def leads_upload(request):
 	file_obj=request.FILES['fileupload']
 	sales_identify=request.COOKIES["user_id"]
 	if file_obj:
-		destination = open('/Users/lyc/Desktop/tester/test.xlsx', 'wb+')
+		destination = open('/root/yellupload/test.xlsx', 'wb+')
 		for chunk in file_obj:
 			destination.write(chunk)
 		destination.flush()
 		destination.close()
-		workbook=xlrd.open_workbook('/Users/lyc/Desktop/tester/test.xlsx')
+		workbook=xlrd.open_workbook('/root/yellupload/test.xlsx')
 		sheet=workbook.sheet_by_index(0)
 		cust_list=[]
 		if sheet:
